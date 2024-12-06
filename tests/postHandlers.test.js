@@ -37,5 +37,5 @@ test('Response body should contain ....', async () => {
     } catch (error) {
         console.error(error);
     }
-    expect(actualResponseBody["productsCount"]).toBe(0);
+    expect(actualResponseBody.name).toBe("string");
 });

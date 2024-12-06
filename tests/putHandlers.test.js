@@ -12,40 +12,53 @@ const putRequestBody = {
 test('Status code should be 200', async () => {
 	let actualStatusCode;
     try {
-		const response = await fetch(`${config.API_URL}/api/v1/kits`, {
+		const postResponse = await fetch(`${config.API_URL}/api/v1/kits`, {
 			method: 'POST',
 			headers: {
 			'Content-Type': 'application/json'
 			},
 			body: JSON.stringify(requestBody),
 		});
-		actualStatusCode = response.status;
+		const postResponseBody = await postResponse.json();
+		const kitId = postResponseBody.id; 
 
-		const putResponse = await fetch(`${config.API_URL}/api/v1/kits/7`, {
+		const putResponse = await fetch(`${config.API_URL}/api/v1/kits/${kitId}`, {
 			method: 'PUT',
 			headers: {
 			'Content-Type': 'application/json',
 			},
 			body: JSON.stringify(putRequestBody),
 		})
+		actualStatusCode = putResponse.status; 
 	} catch (error) {
 		console.error(error);
 	}
+	expect (actualStatusCode).toBe(200);
 });
 
 test('Response body should contain ....', async () => {
     let actualResponseBody;
     try {
-        const response = await fetch(`${config.API_URL}/api/v1/kits/7`, {
+        const postResponse = await fetch(`${config.API_URL}/api/v1/kits`, {
+			method: 'POST',
+			headers: {
+			'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(requestBody),
+		});
+		const postResponseBody = await postResponse.json();
+		const kitId = postResponseBody.id; 
+
+		const putResponse = await fetch(`${config.API_URL}/api/v1/kits/${kitId}`, {
             method: 'PUT',
             headers: {
             'Content-Type': 'application/json'
             },
             body: JSON.stringify(requestBody)
         });
-        actualResponseBody = await response.json();
+        actualResponseBody = await putResponse.json();
     } catch (error) {
         console.error(error);
     }
-    expect(actualResponseBody.ok).toBe(true);
+    expect(actualResponseBody.ok).toBeTruthy();
 });
